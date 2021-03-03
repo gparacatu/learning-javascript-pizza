@@ -11,7 +11,11 @@ pizzaJson.map((pizza, index) => {
 
     pizzaItem.querySelector("a").addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("Clicou!!!")
+        s(".pizzaWindowArea").style.opacity = 0;
+        s(".pizzaWindowArea").style.display = "flex";
+        setTimeout(() => {
+            s(".pizzaWindowArea").style.opacity = 1;
+        });
     });
 
     s(".pizza-area").append( pizzaItem );
