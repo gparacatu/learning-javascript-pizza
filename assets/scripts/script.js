@@ -1,6 +1,9 @@
 const s = (item) => document.querySelector(item); //Cria uma constante para simplificar a query selector
 const sa = (item) => document.querySelectorAll(item); //Cria uma constante para simplificar a query selector all
 let pizzaQuantidade = 1;
+let pizzaKey = 0;
+let carrinho = [];
+
 pizzaJson.map((pizza, index) => {
     //listagem das pizzas
     let pizzaItem = s(".models .pizza-item").cloneNode(true);
@@ -16,12 +19,13 @@ pizzaJson.map((pizza, index) => {
         e.preventDefault();
         pizzaQuantidade = 1;
         let key = e.target.closest(".pizza-item").getAttribute("data-key");
-
+        pizzaKey = key;
         // console.log(pizzaJson[index]);
 
         s(".pizzaBig img").src = pizzaJson[key].img;
         s(".pizzaInfo h1").innerHTML = pizzaJson[key].name;
         s(".pizzaInfo--desc").innerHTML = pizzaJson[key].description;
+        s(".pizzaInfo--actualPrice").innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
         s(".pizzaInfo--size.selected").classList.remove("selected");
         var controlIndex = sa(".pizzaInfo--size").length;
         sa(".pizzaInfo--size").forEach((size, sizeIndex) => {
@@ -71,4 +75,24 @@ s(".pizzaInfo--qtmenos").addEventListener("click", () => {
         pizzaQuantidade--;
         s(".pizzaInfo--qt").innerHTML = pizzaQuantidade;
     }
+});
+
+sa(".pizzaInfo--size").forEach((size, sizeIndex) => {
+    size.addEventListener("click", (e) => {
+        s(".pizzaInfo--size.selected").classList.remove("selected");
+        e.target.classList.add("selected");
+    });
+});
+
+//Botao adicionar Carrinho
+s(".pizzaInfo--addButton").addEventListener("click", () => {
+    let size = parseInt(s(".pizzaInfo--size.selected").getAttribute("data-key"));
+    carrinho.push(
+        {
+            id:pizzaJson[pizzaKey].id,
+            size,
+            pizzaQuantidade
+        }
+    )
+    closeModal();
 });
